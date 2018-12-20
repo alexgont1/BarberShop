@@ -52,13 +52,32 @@ post '/visit' do
 		end
 	end
 
+	db = get_db
+	db.execute 'INSERT INTO
+	Users
+	(
+		username,
+		phone,
+		datestamp,
+		barber,
+		color
+	)
+	values (?, ?, ?, ?, ?)',
+	[
+		@user_name,
+		@phone,
+		@date_time,
+		@barber,
+		@color
+	]
+
 	@title = "Thank you!"
 	@message = "Dear #{@user_name}, your color is #{@color}, #{@barber} will wait for you on #{@date_time}"
 		
   # save info to file
- 	f = File.open './public/users.txt', 'a'
-	f.write "#{@user_name}, color: #{@color}, phone: #{@phone}, date and time: #{@date_time}, barber: #{@barber}\n"
-	f.close
+ 	# f = File.open './public/users.txt', 'a'
+	# f.write "#{@user_name}, color: #{@color}, phone: #{@phone}, date and time: #{@date_time}, barber: #{@barber}\n"
+	# f.close
 
 	erb :message
 end
@@ -109,4 +128,8 @@ post '/admin_inside' do
 		@file = File.open("./public/contacts.txt","r")
 		erb :users_contacts
 	end
+end
+
+def get_db
+	return SQLite3::Database.new 'barbershop.db'
 end

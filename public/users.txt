@@ -5,3 +5,4 @@ zeze, color: #7bd148, phone: 000-000-0000, date and time: Dec. 26, 4 pm., barber
 xandrwin, color: #7bd148, phone: +79169252928, date and time: , barber: Walter White
 , color: #7bd148, phone: +79169252928, date and time: , barber: Walter White
 alex, color: #7bd148, phone: +79169252928, date and time: Dec. 23, 11 am., barber: Walter White
+alex, color: #7bd148, phone: +79169252928, date and time: Dec. 23, 11 am., barber: Walter White
