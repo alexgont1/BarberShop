@@ -1,0 +1,49 @@
+<h2>Make an appointment</h2>
+<p>Here you can make an appointment</p>
+
+<form action="/visit" method="POST" role="form">
+
+  <div class="form-group">
+    <label>Your name</label>
+    <input name="user_name" type="text" class="form-control" placeholder="Your name" value="<%= @user_name %>">
+  </div>
+
+  <div class="form-group">
+    <label>Your phone</label>
+    <input name="phone" type="text" class="form-control" placeholder="Your phone" value="<%= @phone %>">
+  </div>
+
+  <div class="form-group">
+    <label>Date and time?</label>
+    <input name="date_time" type="text" class="form-control" placeholder="Date and time" value="<%= @date_time %>">
+  </div>
+
+  <div class="form-group">
+    <label>Your barber:</label>    
+    <select class="form-control" name="barber">
+      <option>Walter White</option>
+      <option>Jessie Pinkman</option>
+      <option>Gus Fring</option>
+      <option>Uncle Tom</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>What color do you like?</label>    
+    <select id="color"  name="color">
+      <option value="#7bd148">Green</option>
+      <option value="#fbd75b">Yellow</option>
+      <option value="#ff887c">Red</option>
+      <option value="#e1e1e1">Grey</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+
+<script type="text/javascript">
+$(function() {
+  $('#color').simplecolorpicker();
+})
+</script>
