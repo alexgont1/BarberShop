@@ -15,7 +15,8 @@
 
   <div class="form-group">
     <label>Date and time?</label>
-    <input name="date_time" type="text" class="form-control" placeholder="Date and time" value="<%= @date_time %>">
+    <!-- autocomplete history overlaps plugin - trying to turn it off  -->
+    <input id="datetimepicker" name="date_time" autocomplete="off" type="text" class="form-control" placeholder="Date and time" value="<%= @date_time %>">
   </div>
 
   <div class="form-group">
@@ -45,5 +46,6 @@
 <script type="text/javascript">
 $(function() {
   $('#color').simplecolorpicker();
+  $('#datetimepicker').datetimepicker(); 
 })
 </script>
