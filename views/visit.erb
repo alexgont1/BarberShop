@@ -22,10 +22,14 @@
   <div class="form-group">
     <label>Your barber:</label>    
     <select class="form-control" name="barber">
+<!--  previous code:
       <option>Walter White</option>
       <option <%= @barber == 'Jessie Pinkman' ? 'selected' : ''%>>Jessie Pinkman</option>
       <option <%= @barber == 'Gus Fring' ? 'selected' : ''%>>Gus Fring</option>
-      <option <%= @barber == 'Uncle Tom' ? 'selected' : ''%>>Uncle Tom</option>
+      <option <%= @barber == 'Uncle Tom' ? 'selected' : ''%>>Uncle Tom</option> -->
+
+      <%= @bb_show %>
+
     </select>
   </div>
 

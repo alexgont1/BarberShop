@@ -16,6 +16,24 @@ configure do
 		"barber" TEXT,
 		"color" TEXT
 	)'
+
+	@db.execute 'CREATE TABLE IF NOT EXISTS
+	"Barbers"
+	(
+		"id" INTEGER PRIMARY KEY AUTOINCREMENT,
+		"barbername" TEXT
+	)'
+
+	#barbers array
+	bb = ["Walter White", "Jessie Pinkman", "Gus Fring", "Uncle Tom"]
+
+	#insert barbers if table is empty
+	if (@db.execute 'SELECT * FROM Barbers').empty?
+		bb.each do |x|
+			@db.execute 'INSERT INTO Barbers (barbername) 
+			VALUES (?)', [x]
+		end		
+	end
 end
 
 get '/' do
@@ -28,6 +46,24 @@ get '/about' do
 end
 
 get '/visit' do
+	#get hash with barbers for select field
+	db = get_db
+	@bb = db.execute 'SELECT barbername FROM Barbers'
+
+	#prepare html string with all barbers
+	@bb_show = ""
+	@bb.each do |value|
+		aa = value.to_s
+		aa[0..1] = ''
+		aa[aa.length-2..aa.length] = ''
+		@bb_show = @bb_show + "<option>" + aa + "</option>"
+		@@bb_show_copy = @bb_show
+		#example of string from visit page:
+		#<option <%= @barber == 'Gus Fring' ? 'selected' : ''%>>Gus Fring</option>
+		#@bb_show = @bb_show + "<option <%= @barber == '" + aa + "' ? 'selected' : ''%>>" + aa + "</option>"
+
+	end
+
 	erb :visit
 end
 
@@ -48,6 +84,7 @@ post '/visit' do
 	hh.each do |key, value|
 		if params[key] == ''
 			@error = hh[key]
+			@bb_show = @@bb_show_copy
 			return erb :visit
 		end
 	end
@@ -62,7 +99,7 @@ post '/visit' do
 		barber,
 		color
 	)
-	values (?, ?, ?, ?, ?)',
+	VALUES (?, ?, ?, ?, ?)',
 	[
 		@user_name,
 		@phone,
@@ -73,9 +110,6 @@ post '/visit' do
 
 	@title = "Thank you!"
 	@message = "Dear #{@user_name}, your color is #{@color}, #{@barber} will wait for you on #{@date_time}"
-
-#db = get_db
-@message = @message + "\n\n" + (db.execute 'SELECT * FROM Users').to_s
 		
   # save info to file
  	# f = File.open './public/users.txt', 'a'
@@ -131,6 +165,20 @@ post '/admin_inside' do
 		@file = File.open("./public/contacts.txt","r")
 		erb :users_contacts
 	end
+end
+
+get '/showusers' do
+	db = get_db
+	#show hash
+	@info_users = db.execute 'SELECT * FROM Users ORDER BY id DESC'
+
+	#show each id on new line
+	@info_users_show = ""
+	@info_users.each do |value|
+		@info_users_show = @info_users_show + value.to_s + "<br>"
+	end
+
+	erb :showusers
 end
 
 def get_db
