@@ -73,6 +73,9 @@ post '/visit' do
 
 	@title = "Thank you!"
 	@message = "Dear #{@user_name}, your color is #{@color}, #{@barber} will wait for you on #{@date_time}"
+
+#db = get_db
+@message = @message + "\n\n" + (db.execute 'SELECT * FROM Users').to_s
 		
   # save info to file
  	# f = File.open './public/users.txt', 'a'
@@ -132,4 +135,6 @@ end
 
 def get_db
 	return SQLite3::Database.new 'barbershop.db'
+	db.results_as_hash = true
+	return db
 end
