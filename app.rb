@@ -3,6 +3,12 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
 
+def get_db
+	return SQLite3::Database.new 'barbershop.db'
+	db.results_as_hash = true
+	return db
+end
+
 #do smth when app starts
 configure do
 	@db = SQLite3::Database.new 'barbershop.db'
@@ -25,7 +31,7 @@ configure do
 	)'
 
 	#barbers array
-	bb = ["Walter White", "Jessie Pinkman", "Gus Fring", "Uncle Tom"]
+	bb = ['Walter White', 'Jessie Pinkman', 'Gus Fring', 'Uncle Tom']
 
 	#insert barbers if table is empty
 	if (@db.execute 'SELECT * FROM Barbers').empty?
@@ -179,10 +185,4 @@ get '/showusers' do
 	end
 
 	erb :showusers
-end
-
-def get_db
-	return SQLite3::Database.new 'barbershop.db'
-	db.results_as_hash = true
-	return db
 end
