@@ -6,17 +6,25 @@
 <p><%= @info_users_show %></p> -->
 
 <!-- solution with table: -->
-<table class="table">
-	<tr>
-		<td>aa</td>
-		<td>bb</td>
-	</tr>
-	<tr>
-		<td>cc</td>
-		<td>dd</td>
-	</tr>
-	<tr>
-		<td>ee</td>
-		<td>ff</td>
-	</tr>
-</table>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Phone</th>
+			<th>Date and time</th>
+			<th>Barber</th>
+			<th>Color</th>
+		</tr>
+	</thead>
+	<body>
+		<% @results.each do |row| %>
+			<tr>
+				<td><%= row[1] %></td><!-- row['username'] doesn't work -->	
+				<td><%= row[2] %></td>	
+				<td><%= row[3] %></td>	
+				<td><%= row[4] %></td>	
+				<td><%= row[5] %></td>		
+			</tr>
+		<% end %>
+	</body>
+</table> 

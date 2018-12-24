@@ -175,14 +175,19 @@ end
 
 get '/showusers' do
 	db = get_db
+	
+	#my 1st solution:
 	#show hash
-	@info_users = db.execute 'SELECT * FROM Users ORDER BY id DESC'
+	#@info_users = db.execute 'SELECT * FROM Users ORDER BY id DESC'
 
 	#show each id on new line
-	@info_users_show = ""
-	@info_users.each do |value|
-		@info_users_show = @info_users_show + value.to_s + "<br>"
-	end
+	#@info_users_show = ""
+	#@info_users.each do |value|
+	#	@info_users_show = @info_users_show + value.to_s + "<br>"
+	#end
+
+	#2nd solution - only logic is here, no HTML
+	@results = db.execute 'SELECT * FROM Users ORDER BY id DESC'
 
 	erb :showusers
 end
