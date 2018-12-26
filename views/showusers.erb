@@ -16,7 +16,7 @@
 			<th>Color</th>
 		</tr>
 	</thead>
-	<body>
+	<tbody>
 		<% @results.each do |row| %>
 			<tr>
 				<td><%= row[1] %></td><!-- row['username'] doesn't work -->	
@@ -26,5 +26,5 @@
 				<td><%= row[5] %></td>		
 			</tr>
 		<% end %>
-	</body>
+	</tbody>
 </table> 
