@@ -22,19 +22,18 @@
   <div class="form-group">
     <label>Your barber:</label>    
     <select class="form-control" name="barber">
-<!--  previous code:
-      <option>Walter White</option>
-      <option <%= @barber == 'Jessie Pinkman' ? 'selected' : ''%>>Jessie Pinkman</option>
-      <option <%= @barber == 'Gus Fring' ? 'selected' : ''%>>Gus Fring</option>
-      <option <%= @barber == 'Uncle Tom' ? 'selected' : ''%>>Uncle Tom</option> -->
 
-      <%= @bb_show %>
+      <% @barbers.each do |item| %>
+         <option <%= @barber == item[1] ? 'selected' : '' %>>
+          <%= item[1] %></option>
+          <!-- don't work: item['barbername'] -->
+      <% end %>
 
     </select>
   </div>
 
   <div class="form-group">
-    <label>What color do you like?</label>    
+    <label>What color do you like?</label>
     <select id="color"  name="color">
       <option value="#7bd148">Green</option>
       <option value="#fbd75b">Yellow</option>
@@ -50,6 +49,6 @@
 <script type="text/javascript">
 $(function() {
   $('#color').simplecolorpicker();
-  $('#datetimepicker').datetimepicker(); 
+  $('#datetimepicker').datetimepicker();
 })
 </script>

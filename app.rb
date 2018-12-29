@@ -3,15 +3,32 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
 
+def is_barber_exists? db, name
+	db.execute('select * from Barbers where barbername=?', [name]).length > 0
+end
+
+def seed_db db, barbers
+	barbers.each do |barber|
+		if !is_barber_exists? db, barber
+			db.execute 'INSERT INTO Barbers (name) VALUES (?)', [barber]
+		end
+	end
+end
+
 def get_db
 	return SQLite3::Database.new 'barbershop.db'
 	db.results_as_hash = true
 	return db
 end
 
+before do
+	db = get_db
+	@barbers = db.execute 'SELECT * FROM Barbers'
+end
+
 #do smth when app starts
 configure do
-	@db = SQLite3::Database.new 'barbershop.db'
+	db = get_db
 	@db.execute 'CREATE TABLE IF NOT EXISTS
 	"Users"
 	(
@@ -30,16 +47,7 @@ configure do
 		"barbername" TEXT
 	)'
 
-	#barbers array
-	bb = ['Walter White', 'Jessie Pinkman', 'Gus Fring', 'Uncle Tom']
-
-	#insert barbers if table is empty
-	if (@db.execute 'SELECT * FROM Barbers').empty?
-		bb.each do |x|
-			@db.execute 'INSERT INTO Barbers (barbername) 
-			VALUES (?)', [x]
-		end		
-	end
+	seed_db db, ['Walter White', 'Jessie Pinkman', 'Gus Fring', 'Uncle Tom']
 end
 
 get '/' do
@@ -47,29 +55,10 @@ get '/' do
 end
 
 get '/about' do
-	#@error = 'something'
 	erb :about
 end
 
 get '/visit' do
-	#get hash with barbers for select field
-	db = get_db
-	@bb = db.execute 'SELECT barbername FROM Barbers'
-
-	#prepare html string with all barbers
-	@bb_show = ""
-	@bb.each do |value|
-		aa = value.to_s
-		aa[0..1] = ''
-		aa[aa.length-2..aa.length] = ''
-		@bb_show = @bb_show + "<option>" + aa + "</option>"
-		@@bb_show_copy = @bb_show
-		#example of string from visit page:
-		#<option <%= @barber == 'Gus Fring' ? 'selected' : ''%>>Gus Fring</option>
-		#@bb_show = @bb_show + "<option <%= @barber == '" + aa + "' ? 'selected' : ''%>>" + aa + "</option>"
-
-	end
-
 	erb :visit
 end
 
@@ -116,11 +105,6 @@ post '/visit' do
 
 	@title = "Thank you!"
 	@message = "Dear #{@user_name}, your color is #{@color}, #{@barber} will wait for you on #{@date_time}"
-		
-  # save info to file
- 	# f = File.open './public/users.txt', 'a'
-	# f.write "#{@user_name}, color: #{@color}, phone: #{@phone}, date and time: #{@date_time}, barber: #{@barber}\n"
-	# f.close
 
 	erb :message
 end
@@ -174,18 +158,7 @@ post '/admin_inside' do
 end
 
 get '/showusers' do
-	db = get_db
-	
-	#my 1st solution:
-	#show hash
-	#@info_users = db.execute 'SELECT * FROM Users ORDER BY id DESC'
-	#show each id on new line
-	#@info_users_show = ""
-	#@info_users.each do |value|
-	#	@info_users_show = @info_users_show + value.to_s + "<br>"
-	#end
-
-	#2nd solution - only logic is here, no HTML
+	db = get_db	
 	@results = db.execute 'SELECT * FROM Users ORDER BY id DESC'
 
 	erb :showusers
