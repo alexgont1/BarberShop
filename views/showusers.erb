@@ -1,10 +1,5 @@
 <h2>Users list</h2>
 
-<!-- simple solution without any table:
-<p><%= @info_users %></p>
-<br><br><br>
-<p><%= @info_users_show %></p> -->
-
 <!-- solution with table: -->
 <table class="table table-striped">
 	<thead>
@@ -17,14 +12,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<%= @results %>
 		<% @results.each do |row| %>
 			<tr>
 				<td><%= row[1] %></td><!-- row['username'] doesn't work -->	
-				<td><%= row[2] %></td>	
-				<td><%= row[3] %></td>	
-				<td><%= row[4] %></td>	
-				<td><%= row[5] %></td>		
+				<td><%= row[2] %></td><!-- phone -->
+				<td><%= row[3] %></td><!-- date/time -->
+				<td><%= row[4] %></td><!-- barber -->
+				<td style="background-color: <%= row[5] %>"><%= row[5] %></td><!-- color -->
 			</tr>
 		<% end %>
 	</tbody>
