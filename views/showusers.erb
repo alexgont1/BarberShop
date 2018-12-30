@@ -14,11 +14,11 @@
 	<tbody>
 		<% @results.each do |row| %>
 			<tr>
-				<td><%= row[1] %></td><!-- row['username'] doesn't work -->	
-				<td><%= row[2] %></td><!-- phone -->
-				<td><%= row[3] %></td><!-- date/time -->
-				<td><%= row[4] %></td><!-- barber -->
-				<td style="background-color: <%= row[5] %>"><%= row[5] %></td><!-- color -->
+				<td><%= row['username'] %></td>	
+				<td><%= row['phone'] %></td>
+				<td><%= row['datestamp'] %></td>
+				<td><%= row['barber'] %></td>
+				<td style="background-color: <%= row['color'] %>"><%= row['color'] %></td>
 			</tr>
 		<% end %>
 	</tbody>

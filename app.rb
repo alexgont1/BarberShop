@@ -4,33 +4,33 @@ require 'sinatra/reloader'
 require 'sqlite3'
 
 def is_barber_exists? db, name
-	db.execute('select * from Barbers where barbername=?', [name]).length > 0
+	@db.execute('select * from Barbers where barbername=?', [name]).length > 0
 end
 
 def seed_db db, barbers
 	barbers.each do |barber|
 		if !is_barber_exists? db, barber
-			db.execute 'INSERT INTO Barbers (name) VALUES (?)', [barber]
+			@db.execute 'INSERT INTO Barbers (name) VALUES (?)', [barber]
 		end
 	end
 end
 
 def get_db
-	return SQLite3::Database.new 'barbershop.db'
-	db.results_as_hash = true
-	return db
+	@db = SQLite3::Database.new 'barbershop.db'
+	@db.results_as_hash = true
+	@db
 end
 
 before do
-	db = get_db
-	@barbers = db.execute 'SELECT * FROM Barbers'
+	@db = get_db
+	@barbers = @db.execute 'SELECT * FROM Barbers'
 end
 
 #do smth when app starts
 configure do
-	db = get_db
+	@db = get_db
 	@db.execute 'CREATE TABLE IF NOT EXISTS
-	"Users"
+	Users
 	(
 		"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 		"username" TEXT,
@@ -47,7 +47,7 @@ configure do
 		"barbername" TEXT
 	)'
 
-	seed_db db, ['Walter White', 'Jessie Pinkman', 'Gus Fring', 'Uncle Tom']
+	seed_db @db, ['Walter White', 'Jessie Pinkman', 'Gus Fring', 'Uncle Tom']
 end
 
 get '/' do
@@ -84,8 +84,8 @@ post '/visit' do
 		end
 	end
 
-	db = get_db
-	db.execute 'INSERT INTO
+	@db = get_db
+	@db.execute 'INSERT INTO
 	Users
 	(
 		username,
@@ -158,8 +158,8 @@ post '/admin_inside' do
 end
 
 get '/showusers' do
-	db = get_db	
-	@results = db.execute 'SELECT * FROM Users ORDER BY id DESC'
+	@db = get_db	
+	@results = @db.execute 'SELECT * FROM Users ORDER BY id DESC'
 
 	erb :showusers
 end
